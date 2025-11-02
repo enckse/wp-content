@@ -142,6 +142,8 @@ function hphp_render_settings_page() {
             Indicates whether document ready should fire an init.
             <br />
             <input type="checkbox" name="hphp_pages_onready" id="hphp_pages_onready" <?php echo $checked; ?>/>
+            <br />
+            <a href="https://github.com/enckse/wp-content">More information online</a>
             </div>
             <hr />
             <?php submit_button(); ?>
