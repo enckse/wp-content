@@ -12,14 +12,6 @@ on:
 
 jobs:
   builds:
-          - name: ubuntu-latest
-            image: alpine:latest
-            display: alpine
-            deps: apk add make tar
-          - name: macos-latest
-            image: null
-            display: macos
-            deps: "echo no deps"
     runs-on: ubuntu-latest
     name: alpine-build
     container:
