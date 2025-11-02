@@ -12,28 +12,35 @@ EOF
   for f in $(jq -r '.counters | keys_unsorted[]' "$1"); do
     fa=""
     disp=""
+    idx=0
     case "$f" in
       "cats_adopted")
+        idx="02"
         fa="cat"
         disp="Cats Adopted"
         ;;
       "dogs_adopted")
+        idx="01"
         fa="dog"
         disp="Dogs Adopted"
         ;;
       "pocket_pets_adopted")
+        idx="03"
         fa="otter"
         disp="Pocket Pets Adopted"
         ;;
       "sanctuary_animals")
         fa="store-alt"
         disp="Sanctuary Animals"
+        idx="06"
         ;;
       "total_animals_adopted_matcher")
+        idx="04"
         fa="home"
         disp="Total Animals Adopted"
         ;;
       "trap_neuter_return")
+        idx="05"
         fa="paw"
         disp="Trap-Neuter-Return (TNR)"
         ;;
@@ -41,15 +48,21 @@ EOF
         echo "unknown type for mapping" >&2
         ;;
     esac
-    cat << EOF
+    {
+      cat << EOF
 <tr>
 <td class="hphp-value-cell"><span id="hphp_counter_${f}_display">0</span><i class="fa fa-$fa hphp-icon-counter"></i></td>
 <td class="hphp-label-cell">$disp</td>
 </tr>
 EOF
+    } > "$TARGET/item.$idx.html"
   done
+  cat "$TARGET/"item.*
   cat << EOF
 </tbody>
 </table>
+<script>
+hphpInit()
+</script>
 EOF
 } > "$TARGET/table.html"
