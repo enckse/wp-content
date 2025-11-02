@@ -19,6 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: "deps"
-        run: apk add make minify
+        run: apk add make minify zip
       - name: "build"
         run: cd plugins/hphp && make
