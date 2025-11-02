@@ -1,0 +1,55 @@
+#!/bin/sh -e
+[ -z "$1" ] && echo "no file given" && exit 1
+[ ! -e "$1" ] && echo "file does not exist" && exit 1
+TARGET="target"
+mkdir -p "$TARGET"
+
+{
+  cat << EOF
+<table class="hphp-data-table-display">
+<tbody>
+EOF
+  for f in $(jq -r '.counters | keys_unsorted[]' "$1"); do
+    fa=""
+    disp=""
+    case "$f" in
+      "cats_adopted")
+        fa="cat"
+        disp="Cats Adopted"
+        ;;
+      "dogs_adopted")
+        fa="dog"
+        disp="Dogs Adopted"
+        ;;
+      "pocket_pets_adopted")
+        fa="otter"
+        disp="Pocket Pets Adopted"
+        ;;
+      "sanctuary_animals")
+        fa="store-alt"
+        disp="Sanctuary Animals"
+        ;;
+      "total_animals_adopted_matcher")
+        fa="home"
+        disp="Total Animals Adopted"
+        ;;
+      "trap_neuter_return")
+        fa="paw"
+        disp="Trap-Neuter-Return (TNR)"
+        ;;
+      *)
+        echo "unknown type for mapping" >&2
+        ;;
+    esac
+    cat << EOF
+<tr>
+<td class="hphp-value-cell"><span id="hphp_counter_${f}_display">0</span><i class="fa fa-$fa hphp-icon-counter"></i></td>
+<td class="hphp-label-cell">$disp</td>
+</tr>
+EOF
+  done
+  cat << EOF
+</tbody>
+</table>
+EOF
+} > "$TARGET/table.html"
