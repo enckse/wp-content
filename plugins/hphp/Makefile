@@ -1,13 +1,14 @@
-PLUGIN_VERSION     := 1.8.5
+PLUGIN_VERSION     := 1.8.6
 PLUGIN_JS_VERSION  := 1.8.2
 PLUGIN_CSS_VERSION := 1.0.0
 PLUGIN_JS_HASH     := 91459f3
 PLUGIN_CSS_HASH    := d7a8720
-PLUGIN_HASH        := 9215be9
+PLUGIN_HASH        := b470406
 NEED_FILES         :=
 HAVE_HASH          :=
 NEED_HASH          :=
 HASH_NAME          :=
+CI                 := 0
 ifneq ($(NEED_FILES),)
 	NEED_HASH      := $(shell sha256sum *.$(NEED_FILES) | sort | sha256sum | cut -c 1-7)
 endif
@@ -33,6 +34,7 @@ $(ARTIFACT): *.*
 		sed "s/{CSS_VERSION}/$(PLUGIN_CSS_VERSION)/g" | \
 		sed "s/{JS_VERSION}/$(PLUGIN_JS_VERSION)/g" > $(WORKDIR)/hphp.php
 	@cd $(TARGET) && zip $(ZIP) hphp/*
+	@echo "zip generated"
 
 check:
 	@make --no-print-directory _check_hash HAVE_HASH="$(PLUGIN_HASH)" NEED_FILES="*" HASH_NAME=plugin
@@ -50,5 +52,8 @@ ifneq ($(NEED_HASH),$(HAVE_HASH))
 	$(warning WARN: found hash $(NEED_HASH) for $(HASH_NAME), version update required)
 	$(warning ===============)
 	$(warning )
+ifeq ($(CI),1)
+	$(error hash check failed)
+endif
 endif
 	@exit 0

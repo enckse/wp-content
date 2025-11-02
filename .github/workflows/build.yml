@@ -24,7 +24,7 @@ jobs:
       - name: "deps"
         run: apk add make minify zip
       - name: "build"
-        run: cd plugins/hphp && make
+        run: cd plugins/hphp && make CI=1
       - name: release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
