@@ -3,6 +3,7 @@
 [ ! -e "$1" ] && echo "file does not exist" && exit 1
 TARGET="target"
 mkdir -p "$TARGET"
+TABLES="$TARGET/data-counter-tables.html"
 
 {
   cat << EOF
@@ -65,4 +66,6 @@ EOF
 hphpInit()
 </script>
 EOF
-} > "$TARGET/table.html"
+} > "$TABLES"
+
+echo "generated: $TABLES"
