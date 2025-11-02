@@ -7,14 +7,14 @@
   font-family: Arial, sans-serif !important;
 }
 
-.hphp-bar-data-table-display tr {
+.hphp-data-table-display tr {
   padding: 0 !important;
   margin: 0 !important;
   border: none !important;
   vertical-align: middle !important;
 }
 
-.hphp-bar-data-table-display td {
+.hphp-data-table-display td {
   border: none !important;
   padding: 5px !important;
   margin: 0 !important;
@@ -24,8 +24,8 @@
 }
 
 .hphp-icon-counter {
-	padding-right: 20px !important;
-  padding-left: 10px;
+  padding-right: 20px !important;
+  padding-left: 10px !important;
 }
 
 .hphp-label-cell {
