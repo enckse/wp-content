@@ -1,0 +1,32 @@
+name: "build"
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  builds:
+          - name: ubuntu-latest
+            image: alpine:latest
+            display: alpine
+            deps: apk add make tar
+          - name: macos-latest
+            image: null
+            display: macos
+            deps: "echo no deps"
+    runs-on: ubuntu-latest
+    name: alpine-build
+    container:
+      image: alpine:latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: "deps"
+        run: apk add make minify
+      - name: "build"
+        run: cd plugins/hphp && make
