@@ -135,7 +135,7 @@ function hphp_render_settings_page() {
             It currently accepts a 'counters' key which is a dictionary of name/value pairs where name is the variable and value is one of 'int' or 'sum'. An 'int' type is a numeric and a 'sum' requires a string to match on.
             <textarea name="hphp_json_configuration" id="hphp_json_configuration" rows="10" cols="80"><?php echo esc_attr( $json_payload ); ?></textarea>
             <hr />
-            This value controls whether a page is allowed to process/show counter data ([a-z] strings and comma delimited: ',')
+            This value controls whether a page is allowed to process/show counter data ([a-z0-9-] strings and comma delimited: ',')
             <br />
             <input type="text" name="hphp_pages_allowed" id="hphp_pages_allowed" value='<?php echo esc_attr( $pages ); ?>'/>
             <hr />
