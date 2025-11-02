@@ -22,3 +22,8 @@ jobs:
         run: apk add make minify zip
       - name: "build"
         run: cd plugins/hphp && make
+      - name: release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: plugins/**/target/*.zip
