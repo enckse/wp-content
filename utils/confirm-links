@@ -1,0 +1,38 @@
+#!/bin/sh -e
+ROOT="https://happypawshaven.pet/"
+TARGET="target"
+HOME_PAGE="$TARGET/home.html"
+mkdir -p "$TARGET"
+find "$TARGET" -type f -delete
+
+_download_page() {
+  curl --silent --fail -L "$1" > "$2"
+}
+
+_download_page "$ROOT" "$HOME_PAGE"
+
+_load_pages() {
+  _load_unique_pages "$1" "$2"
+}
+
+_load_unique_pages() {
+  for f in $(grep "$ROOT" "$1" | grep -v 'wp-includes' | grep -v 'wp-content' | grep -v 'wp-json' | grep -v '_static/'); do
+    if echo "$f" | grep -q "https://"; then
+      PAGE="$(echo "$f" | cut -d "=" -f 2 | cut -d '"' -f 2 | sed 's/"//g' | sed "s/'//g")"
+      [ "$PAGE" = "$ROOT" ] && continue
+      BNAME=$(basename "$PAGE")
+      if [ "$BNAME" = "feed" ] || [ "$BNAME" = "xmlrpc.php" ]; then
+        continue
+      fi
+      TO="$TARGET/$BNAME.html"
+      echo "$(basename "$1") -> $2references: $PAGE"
+      [ -e "$TO" ] && continue
+      echo " ^downloading"
+      _download_page "${PAGE}" "$TO"
+      [ ! -s "$TO" ] && echo "no content" && continue
+      _load_pages "$TO" " $2"
+    fi
+  done
+}
+
+_load_pages "$HOME_PAGE" " "
