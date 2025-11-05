@@ -18,6 +18,7 @@ TARGET   := target/
 ZIP      := $(NAME)-$(PLUGIN_VERSION).zip
 ARTIFACT := $(TARGET)$(ZIP)
 WORKDIR  := $(TARGET)$(NAME)
+EXT      :=
 
 all: setup check $(ARTIFACT)
 
@@ -28,13 +29,16 @@ clean:
 	@rm -rf $(TARGET)
 
 $(ARTIFACT): *.*
-	@minify -q -o $(WORKDIR)/plugin.js plugin.js
-	@cp *.css $(WORKDIR)/
+	@make --no-print-directory _minify EXT=css
+	@make --no-print-directory _minify EXT=js
 	@sed "s/{VERSION}/$(PLUGIN_VERSION)/g" hphp.php | \
 		sed "s/{CSS_VERSION}/$(PLUGIN_CSS_VERSION)/g" | \
 		sed "s/{JS_VERSION}/$(PLUGIN_JS_VERSION)/g" > $(WORKDIR)/hphp.php
 	@cd $(TARGET) && zip $(ZIP) hphp/*
 	@echo "zip generated"
+
+_minify:
+	@for f in $(shell ls *.$(EXT)); do echo "minify: $$f"; minify -q -o $(WORKDIR)/$$f $$f; done
 
 check:
 	@make --no-print-directory _check_hash HAVE_HASH="$(PLUGIN_HASH)" NEED_FILES="*" HASH_NAME=plugin

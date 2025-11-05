@@ -1,0 +1,39 @@
+.hphp-data-table-display {
+  border: none !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  margin: 20px auto !important;
+  width: 80% !important;
+  font-family: Arial, sans-serif !important;
+}
+
+.hphp-data-table-display tr {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  vertical-align: middle !important;
+}
+
+.hphp-data-table-display td {
+  border: none !important;
+  padding: 5px !important;
+  margin: 0 !important;
+  height: 25px !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+.hphp-icon-counter {
+  padding-right: 20px !important;
+  padding-left: 10px !important;
+}
+
+.hphp-label-cell {
+  text-align: left !important;
+  font-weight: bold !important;
+}
+
+.hphp-value-cell {
+  text-align: right !important;
+  font-weight: bold !important;
+}

@@ -59,15 +59,18 @@ function hphp_sanitize_int( $value ) {
     return ( $value > 0 ) ? $value : 0;
 }
 
-function hphp_load_counters( $json ) {
+function hphp_get_counters( $objects ) {
     $counters = array();
-    $objects = json_decode("$json", $true);
     if (property_exists($objects, "counters")) {
         foreach ($objects->counters as $key => $value) {
             $counters["hphp_counter_" . $key] = $value;
         }
     }
     return $counters;
+}
+
+function hphp_load_counters( $json ) {
+    return hphp_get_counters(json_decode("$json"));
 }
  
 function hphp_register_settings_page() {
@@ -153,19 +156,30 @@ function hphp_render_settings_page() {
 }
  
 function hphp_enqueue_assets() {
-    wp_enqueue_style(
-        'hphp-style',
-        plugin_dir_url( __FILE__ ) . 'style.css',
-        array(),
-        '{CSS_VERSION}'
-    );
-    wp_enqueue_script(
-        'hphp-js',
-        plugin_dir_url( __FILE__ ) . 'plugin.js',
-        array('jquery'),
-        '{JS_VERSION}'
-    );
     $pages = get_option("hphp_pages_allowed", "");
+    $json_payload = get_option("hphp_json_configuration", "{}");
+    $objects = json_decode("$json_payload");
+    if (property_exists($objects, "scripts")) {
+        foreach ($objects->scripts as $key => $value) {
+            $name = "hphp-" . $value . "-" . "$key";
+            $path = plugin_dir_url(__FILE__) . "$key" . "." . $value;
+            if ($value == "js") {
+              wp_enqueue_script(
+                  $name,
+                  $path,
+                  array("jquery"),
+                  '{JS_VERSION}'
+              );
+            } elseif ($value == "css") {
+                wp_enqueue_style(
+                  $name,
+                  $path,
+                  array(),
+                  '{CSS_VERSION}'
+                );
+            }
+        }
+    }
     $allowed = true;
     $page_name = "";
     $queried = get_queried_object();
@@ -186,8 +200,7 @@ function hphp_enqueue_assets() {
     $counter_data = array();
     if ($allowed) {
         $sums = array();
-        $json_payload = get_option("hphp_json_configuration", "{}");
-        $counters = hphp_load_counters( $json_payload );
+        $counters = hphp_get_counters($objects);
         foreach ($counters as $key => $value) {
             if ($value == "int") {
                 $counter_data[$key] = get_option($key, 0);
@@ -219,6 +232,6 @@ function hphp_enqueue_assets() {
     $json_output = json_encode($payload);
     $script = "var hphp_data_payload = " . $json_output . ";";
 
-	wp_add_inline_script('hphp-js', $script, 'before');
+	wp_add_inline_script('hphp-js-plugin', $script, 'before');
 }
 add_action( 'wp_enqueue_scripts', 'hphp_enqueue_assets' );
