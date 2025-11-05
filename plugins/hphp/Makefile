@@ -1,9 +1,9 @@
-PLUGIN_VERSION     := 1.8.7
+PLUGIN_VERSION     := 1.8.8
 PLUGIN_JS_VERSION  := 1.8.3
 PLUGIN_CSS_VERSION := 1.0.1
 PLUGIN_JS_HASH     := 91459f3
 PLUGIN_CSS_HASH    := 3b420f2
-PLUGIN_HASH        := e0b44ac
+PLUGIN_HASH        := cc3ce3a
 NEED_FILES         :=
 HAVE_HASH          :=
 NEED_HASH          :=
