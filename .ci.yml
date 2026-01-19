@@ -1,0 +1,11 @@
+# woodpecker ci yml file
+when:
+  - event: manual
+
+steps:
+  - name: build
+    directory: plugins/hphp
+    image: docker.io/library/alpine:latest
+    commands:
+      - apk add make minify zip
+      - make CI=1
