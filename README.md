@@ -3,8 +3,6 @@ wp-content
 
 WordPress content
 
-[![build](https://github.com/enckse/wp-content/actions/workflows/build.yml/badge.svg)](https://github.com/enckse/wp-content/actions/workflows/build.yml)
-
 ## upfront
 
 Because WordPress is toolbox of very sharp, frustrating, and obnoxious tools
