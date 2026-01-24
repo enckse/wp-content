@@ -3,14 +3,14 @@ PLUGIN_JS_VERSION  := 1.8.3
 PLUGIN_CSS_VERSION := 1.0.1
 PLUGIN_JS_HASH     := 91459f3
 PLUGIN_CSS_HASH    := 3b420f2
-PLUGIN_HASH        := 4f3b4fc
+PLUGIN_HASH        := cc3ce3a
 NEED_FILES         :=
 HAVE_HASH          :=
 NEED_HASH          :=
 HASH_NAME          :=
 CI                 := 0
 ifneq ($(NEED_FILES),)
-	NEED_HASH      := $(shell sha256sum *.$(NEED_FILES) | sort | sha256sum | cut -c 1-7)
+	NEED_HASH      := $(shell sha256sum *.$(NEED_FILES) | grep -v README.md | sort | sha256sum | cut -c 1-7)
 endif
 
 NAME     := hphp
